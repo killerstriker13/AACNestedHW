@@ -2,11 +2,12 @@ package structures;
 
 /**
  * An easy way to store key/value pairs.  We assume that other
- * classes will access fields directly.
+ * classes will access fields directly. (Added methods for getKey and getVal)
  * 
  * @author Samuel A. Rebelsky
+ * @author Shibam Mukhopadhyay
  */
-class KVPair<K,V> {
+public class KVPair<K,V> {
   // +--------+------------------------------------------------------
   // | Fields |
   // +--------+
@@ -51,5 +52,13 @@ class KVPair<K,V> {
   public String toString() {
     return "{ " + this.key.toString() + " : " + this.value.toString() + " }";
   } // toString()
+
+  public K getKey(){
+    return this.key;
+  }
+
+  public V getVal(){
+    return this.value;
+  }
 } // class KVPair
 

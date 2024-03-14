@@ -1,16 +1,19 @@
 package structures;
 
 import static java.lang.reflect.Array.newInstance;
+import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 /**
  * A basic implementation of Associative Arrays with keys of type K
  * and values of type V. Associative Arrays store key/value pairs
- * and permit you to look up values by key.
+ * and permit you to look up values by key. Discussed implementation of Array
+ * through iterator with Pranav.
  *
  * @author Shibam Mukhopadhyay
  * @author Samuel A. Rebelsky
  */
-public class AssociativeArray<K, V> {
+public class AssociativeArray<K, V> implements Iterable<KVPair<K, V>>{
   // +-----------+---------------------------------------------------
   // | Constants |
   // +-----------+
@@ -194,4 +197,26 @@ public class AssociativeArray<K, V> {
      throw new KeyNotFoundException();
   } // find(K)
 
+  @Override
+  public Iterator<KVPair<K,V>> iterator() {
+    return new AAIterator();
+  }
+
+  private class AAIterator implements Iterator<KVPair<K,V>> {
+    private int curr = 0;
+    
+
+    @Override
+    public boolean hasNext() {
+      return curr < size;
+    }
+
+    @Override
+    public KVPair<K,V> next() {
+      if (!hasNext()){
+        throw new NoSuchElementException();
+      }
+      return pairs[curr++];
+    }
+  }
 } // class AssociativeArray

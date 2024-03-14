@@ -10,7 +10,7 @@ import java.awt.Dimension;
 import java.awt.GridLayout; 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
+import java.io.IOException;
 import java.util.Locale;
 import java.util.Scanner;
 
@@ -18,11 +18,13 @@ import javax.speech.Central;
 import javax.speech.synthesis.Synthesizer;
 import javax.speech.synthesis.SynthesizerModeDesc;
 
+import java.io.IOException;
 /**
  * Creates a GUI that has a grid of images that represent the 
  * communication device of the AAC.
  * 
  * @author Catie Baker
+ * @author Shibam Mukhopadhyay
  *
  */
 public class AAC implements ActionListener {
@@ -45,7 +47,9 @@ public class AAC implements ActionListener {
 	 * images and text that will be in the AAC
 	 */
 	public AAC(String filename){ 
+		try{
 		this.aacMappings = new AACMappings(filename);
+		} catch (Exception e){}
 		this.images = this.aacMappings.getImageLocs();
 		this.startIndex = 0;
 		this.endIndex = Math.min(NUM_ACROSS*NUM_DOWN, this.images.length);
@@ -172,7 +176,11 @@ public class AAC implements ActionListener {
 			this.endIndex = Math.min(endIndex + NUM_ACROSS*NUM_DOWN, this.images.length);
 		}
 		else if(actionCommand.equals("save")) {
+			try{
 			this.aacMappings.writeToFile("AACMappingsNew.txt");
+			} catch (IOException err){
+				System.err.println("IOException.");
+			}
 			this.images = this.aacMappings.getImageLocs();
 			this.startIndex = 0;
 			this.endIndex = Math.min(NUM_ACROSS*NUM_DOWN, this.images.length);
@@ -182,7 +190,11 @@ public class AAC implements ActionListener {
 			String imageLoc = input.nextLine().trim();
 			System.out.println("What is the text");
 			String text = input.nextLine().trim();
+			try{
 			this.aacMappings.add(imageLoc, text);
+			} catch (Exception err2){
+				System.err.println("add image did not work :(");
+			}
 			this.images = this.aacMappings.getImageLocs();
 			this.startIndex = 0;
 			this.endIndex = Math.min(NUM_ACROSS*NUM_DOWN, this.images.length);
@@ -195,7 +207,9 @@ public class AAC implements ActionListener {
 		}
 		else {
 			if(this.aacMappings.getCurrentCategory().equals("")) {
-				this.aacMappings.getText(actionCommand);
+				try{
+					this.aacMappings.getText(actionCommand);
+				} catch (Exception err3){}
 				this.images = this.aacMappings.getImageLocs();
 				this.startIndex = 0;
 				this.endIndex = Math.min(NUM_ACROSS*NUM_DOWN, this.images.length);
